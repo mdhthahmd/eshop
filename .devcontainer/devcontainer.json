@@ -1,0 +1,12 @@
+{
+	"name": "C# (.NETCore)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dotnet",
+  "workspaceFolder": "/workspace",
+  "settings": {},
+  "extensions": [
+	  "ms-dotnettools.csharp",
+  	"ms-mssql.mssql",
+  	"pkief.material-icon-theme"
+	]
+}
