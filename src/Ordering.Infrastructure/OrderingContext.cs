@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
+using Ordering.Domain.AggregatesModel.BuyerAggregate;
 using Ordering.Domain.AggregatesModel.OrderAggregate;
 using Ordering.Domain.SeedWork;
 using Ordering.Infrastructure.EntityConfigurations;
@@ -18,10 +19,9 @@ namespace Ordering.Infrastructure
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatus { get; set; }
-
-        // public DbSet<PaymentMethod> Payments { get; set; }
-        // public DbSet<Buyer> Buyers { get; set; }
-        // public DbSet<CardType> CardTypes { get; set; }
+        public DbSet<PaymentMethod> Payments { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
+        public DbSet<CardType> CardTypes { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -124,7 +124,7 @@ namespace Ordering.Infrastructure
         public OrderingContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<OrderingContext>()
-                .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.OrderingDb;Integrated Security=true");
+                .UseSqlServer("Server=db;Initial Catalog=OrderingDb;User Id=sa;Password=P@sS1W0Rd;");
 
             return new OrderingContext(optionsBuilder.Options, new NoMediator());
         }
