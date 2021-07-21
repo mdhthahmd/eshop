@@ -2,23 +2,26 @@ version: '3.7'
 
 services:
     
-    dotnet:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            args:
-                - VARIANT=3.1
-                - INSTALL_NODE=true
-                - NODE_VERSION=lts/*
-                - INSTALL_AZURE_CLI=false
-        volumes:
-            - ..:/workspace
-        user: vscode
-        command: sleep infinity
+    # dotnet:
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #         args:
+    #             - VARIANT=3.1
+    #             - INSTALL_NODE=true
+    #             - NODE_VERSION=lts/*
+    #             - INSTALL_AZURE_CLI=false
+    #     volumes:
+    #         - ..:/workspace
+    #     user: vscode
+    #     command: sleep infinity
 
-    db:
+    database:
         image: mcr.microsoft.com/mssql/server:2019-latest
         restart: unless-stopped
+        user: root # !needs to run as root, as db shuts down due to access denied error
+        ports:
+            - 1433:1433 # not needed for devcontainer, but needed if using local mssql clients
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=P@sS1W0Rd
@@ -26,3 +29,10 @@ services:
         volumes:
             - ../data/mssql:/var/opt/mssql/data
 
+    eventbus:
+        image: rabbitmq:3.8.17-management
+        hostname: message-mq-eventbus
+        restart: unless-stopped
+        ports:
+            - 5672:5672   # service port
+            - 15672:15672 # managment webui port 
